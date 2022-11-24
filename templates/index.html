@@ -1,0 +1,48 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}
+画像から人物・文字を認識
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>画像から人物・文字を認識</h1>
+
+    <form action="/" method="post" enctype="multipart/form-data">
+        <table>
+            <tr>
+                <td>
+                    <input type="file" name="image" accept="image/*" class="form-control" width="200px">
+                </td>
+                <td>
+                    <select name="type" class="form-control" width="200px">
+                        <option value="0">人物</option>
+                        <option value="1">物</option>
+                        <option value="2">文字列</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <br>
+        <input type="submit" value="送信" class="btn btn-primary">
+    </form>
+
+    <hr>
+
+    {% if result %}
+    <h2>結果</h2>
+    <img src="{{ result }}" width="600px">
+    <br>
+    <a href="{{ result }}" class="btn btn-success" download>結果をダウンロード</a>
+    <br>
+    {% endif %}
+
+    {% if result_str %}
+    <ul>
+        {% for str in result_str %}
+        <li>{{ str }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+{% endblock %}
