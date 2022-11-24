@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}
+画像から人物・文字を認識
+{% endblock %}
+
+{% block contents %}
+    <div class="section-title">
+        <h1>画像から人物・文字を認識</h1>
+    </div>
+
+    <form action="/image" method="post" enctype="multipart/form-data">
+        <div class="row justify-content-center">
+            <div class="col-xl-7 col-lg-9 text-center">
+                <div class="row">
+                    <input type="file" name="image" accept="image/*" class="form-control col">
+                    <select name="type" class="form-control col">
+                        <option value="0">人物</option>
+                        <option value="1">物</option>
+                        <option value="2">文字列</option>
+                    </select>
+                </div>
+                <input type="submit" value="送信" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+
+    <hr>
+
+    <div class="row">
+        {% if result %}
+        <div class="col">
+            <div class="d-flex justify-content-between">
+                <h2>結果</h2>
+                <a href="{{ result }}" class="btn btn-success" download>ダウンロード</a>
+            </div>
+            <img src="{{ result }}" width="600px">
+        </div>
+        {% endif %}
+
+        {% if result_str %}
+        <div class="col">
+            <h2>検出されたもの</h2>
+            <ul>
+                {% for str in result_str %}
+                <li>{{ str }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}
