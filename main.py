@@ -10,10 +10,13 @@ bootstrap = Bootstrap(app)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    actives = [False, False, False]
+    return render_template('index.html', actives=actives)
 
 @app.route('/translate', methods=['GET', 'POST'])
 def translate():
+    actives = [True, False, False]
+
     if request.method == 'POST':
         #翻訳元テキスト
         source = request.form.get('sourceTxt')
@@ -23,10 +26,12 @@ def translate():
         source = ''
         result = ''
         audio_path = ''
-    return render_template('translate.html', source=source, result=result, audio_path=audio_path)
+    return render_template('translate.html', actives=actives, source=source, result=result, audio_path=audio_path)
 
 @app.route('/image', methods=['GET', 'POST'])
 def image():
+    actives = [False, True, False]
+
     #画像認識ページ
     if request.method == 'POST':
         #POSTされたとき
@@ -46,7 +51,12 @@ def image():
         #GETされたとき
         result_url = ''
         result_str = []
-    return render_template('rekognition.html', result=result_url, result_str=result_str)
+    return render_template('rekognition.html', actives=actives, result=result_url, result_str=result_str)
+
+@app.route('/emotion')
+def emotion():
+    actives = [False, False, True]
+    return render_template('emotion.html', actives=actives)
 
 if __name__ == '__main__':
     app.run(debug=True)

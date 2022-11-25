@@ -53,9 +53,9 @@
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="/translate">翻訳</a></li>
-          <li><a class="nav-link scrollto" href="/image">画像認識</a></li>
-          <li><a class="nav-link scrollto" href="#services">３</a></li>
+          <li><a class="nav-link scrollto {% if actives[0] %} active {% endif %}" href="/translate">翻訳</a></li>
+          <li><a class="nav-link scrollto {% if actives[1] %} active {% endif %}" href="/image">画像認識</a></li>
+          <li><a class="nav-link scrollto {% if actives[2] %} active {% endif %}" href="/emotion">感情解析</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- ナビゲーションバー -->
@@ -109,7 +109,7 @@
               <li><i class="bx bx-chevron-right"></i> <a href="/">ホーム</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="/translate">翻訳</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="/image">画像認識</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">３</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="/emotion">感情解析</a></li>
             </ul>
           </div>
 

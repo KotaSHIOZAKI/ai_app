@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}
+感情解析
+{% endblock %}
+
+{% block contents %}
+<div style="width:500px; height:500px;">
+    <canvas id="emotionChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+    var ctx = document.getElementById('emotionChart').getContext('2d');
+
+    var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['😀ポジティブ', '😡ネガティブ', '😐ニュートラル', '❓混合'],
+            datasets: [{
+                label: 'Emotion',
+                backgroundColor: ["#1fe800", "#ff0000", "#ffdd00", "#00eeff"],
+                borderColor: 'rgb(0, 0, 0)',
+                data: [60, 20, 10, 10]
+            }]
+        }
+    })
+</script>
+{% endblock %}
