@@ -2,7 +2,8 @@ from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
 from flask_bootstrap import Bootstrap
 
-import functions as func
+import translate as func1
+import detect as func2
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -10,6 +11,19 @@ bootstrap = Bootstrap(app)
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/translate', methods=['GET', 'POST'])
+def translate():
+    if request.method == 'POST':
+        #翻訳元テキスト
+        source = request.form.get('sourceTxt')
+        #翻訳先テキスト、音声パス
+        result, audio_path = func1.translate(source, request.form.get('lang1'), request.form.get('lang2'))
+    else:
+        source = ''
+        result = ''
+        audio_path = ''
+    return render_template('translate.html', source=source, result=result, audio_path=audio_path)
 
 @app.route('/image', methods=['GET', 'POST'])
 def image():
@@ -19,31 +33,20 @@ def image():
         
         #ファイル名を取得
         f = request.files.get('image')
-        filename = secure_filename(f.filename)
         #ファイルを保存するディレクトリを指定
-        filepath = 'static/image/' + filename
+        filepath = 'static/image/in.jpg'
         #ファイルを保存する
         f.save(filepath)
 
         #検出対象（０＝人物、１＝物、２＝文字列）
         t = int(request.form.get('type'))
 
-        result_url, result_str = func.detect_any(filename, t)
+        result_url, result_str = func2.detect_any(t)
     else:
         #GETされたとき
         result_url = ''
         result_str = []
     return render_template('rekognition.html', result=result_url, result_str=result_str)
-
-@app.route('/translate', methods=['GET', 'POST'])
-def translate():
-    if request.method == 'POST':
-        source = request.form.get('sourceTxt')
-        result = func.translate(source, request.form.get('lang1'), request.form.get('lang2'))
-    else:
-        source = ''
-        result = ''
-    return render_template('translate.html', source=source, result=result)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,24 +1,13 @@
 import boto3
 from PIL import Image, ImageFont, ImageDraw
-from werkzeug.utils import secure_filename
-
-#======= 翻訳 =======
-def translate(sequence, lang1, lang2):
-    #Translateサービスクライアントを作成
-    translate = boto3.client('translate')
-    #翻訳元言語から翻訳先言語に翻訳
-    result = translate.translate_text(
-        Text=sequence, SourceLanguageCode=lang1, TargetLanguageCode=lang2)
-    #翻訳後の文章を返す
-    return result['TranslatedText']
 
 #======= 画像認識 =======
-def detect_any(filename, t):
+def detect_any(t):
     #Translate、Rekognitionサービスクライアントを作成
     translate = boto3.client('translate')
     rekognition = boto3.client('rekognition')
     #画像ファイルを開く
-    with open("static/image/" + filename, 'rb') as file:
+    with open("static/image/in.jpg", 'rb') as file:
         if t == 2:
             #画像内の文字列を検出
             result = rekognition.detect_text(Image={'Bytes': file.read()})
@@ -26,7 +15,7 @@ def detect_any(filename, t):
             #画像内の物および人物を検出
             result = rekognition.detect_labels(Image={'Bytes': file.read()})
     #入力画像のファイルを読み込む
-    image_in = Image.open("static/image/" + filename)
+    image_in = Image.open("static/image/in.jpg")
     #画像のサイズを取得
     w, h = image_in.size
     #出力画像の初期化
@@ -68,10 +57,6 @@ def detect_any(filename, t):
 
             if text['DetectedText'] not in detected_list:
                 detected_list.append(text['DetectedText'])
-            
-        # 出力画像をファイルに保存
-        image_in.save('static/image/texts_'+filename)
-        return 'static/image/texts_' + filename, detected_list
     elif t == 1:
         #物の場合
         for label in result['Labels']:
@@ -102,9 +87,6 @@ def detect_any(filename, t):
                     image_draw.rectangle(bbox, fill=(255, 0, 0))
                     image_draw.text(position, text, font=font, fill="black")
                 detected_list.append(trans_name)
-        # 出力画像をファイルに保存
-        image_in.save('static/image/things_'+filename)
-        return 'static/image/things_' + filename, detected_list
     else:
         #人物の場合
         for label in result['Labels']:
@@ -120,7 +102,7 @@ def detect_any(filename, t):
                     #出力画像に人物の部分を赤枠で囲む
                     image_draw.rectangle([(left, top), (right, bottom)],
                         outline=(255, 0, 0), width=2)
-            
-        # 出力画像をファイルに保存
-        image_in.save('static/image/people_'+filename)
-        return 'static/image/people_' + filename, detected_list
+
+    # 出力画像をファイルに保存
+    image_in.save('static/image/out.jpg')
+    return 'static/image/out.jpg', detected_list
