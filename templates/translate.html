@@ -10,7 +10,7 @@
 </div>
 <form action="/translate" method="post">
     <div class="row">
-        <div class="col">
+        <div class="col-5">
             <div class="row">
                 <div class="col">
                     <select name="lang1" id="lang1" class="form-select">
@@ -45,13 +45,13 @@
             <textarea style="resize: none;" name="sourceTxt" id="sourceTxt" cols="30" rows="10" class="form-control">{{ source }}</textarea>
         </div>
 
-        <div class="col">
-            <div class="btn btn-primary">
-                <i class="fa fa-right-left"></i>
+        <div class="col-2 text-center">
+            <div class="btn btn-primary" onclick="swap_langage()">
+                入れ替え
             </div>
         </div>
         
-        <div class="col">
+        <div class="col-5">
             <select name="lang2" id="lang2" class="form-select">
                 <option value="ar">アラビア語</option>
                 <option value="cs">チェコ語</option>
