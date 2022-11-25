@@ -5,45 +5,52 @@
 {% endblock %}
 
 {% block contents %}
-<section id="contact" class="contact">
-    <div class="container" data-aos="fade-up">
-        <div class="section-title">
-            <h2>翻訳</h2>
+<div class="section-title">
+    <h2>翻訳</h2>
+</div>
+<form action="/translate" method="post">
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <select name="lang1" id="lang1" class="form-select">
+                        <option value="auto">自動</option>
+                        <option value="ar">アラビア語</option>
+                        <option value="cs">チェコ語</option>
+                        <option value="da">デンマーク語</option>
+                        <option value="en">英語</option>
+                        <option value="es">スペイン語</option>
+                        <option value="fi">フィンランド語</option>
+                        <option value="fr">フランス語</option>
+                        <option value="de">ドイツ語</option>
+                        <option value="he">ヘブライ語</option>
+                        <option value="id">インドネシア語</option>
+                        <option value="it">イタリア語</option>
+                        <option value="ja" selected>日本語</option>
+                        <option value="ko">韓国語</option>
+                        <option value="nl">オランダ語</option>
+                        <option value="pl">ポーランド語</option>
+                        <option value="pt">ポルトガル語</option>
+                        <option value="ru">ロシア語</option>
+                        <option value="sv">スウェーデン語</option>
+                        <option value="tr">トルコ語</option>
+                        <option value="zh">中国語（簡体字）</option>
+                        <option value="zh-TW">中国語（繁体字）</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <input type="submit" class="btn btn-primary" value="翻訳">
+                </div>
+            </div>
+            <textarea style="resize: none;" name="sourceTxt" id="sourceTxt" cols="30" rows="10" class="form-control">{{ source }}</textarea>
         </div>
-        <form action="/translate/" method="post">
-            <select name="lang1" id="lang1" class="form-select">
-                <option value="auto">自動</option>
-                <option value="ar">アラビア語</option>
-                <option value="cs">チェコ語</option>
-                <option value="da">デンマーク語</option>
-                <option value="en">英語</option>
-                <option value="es">スペイン語</option>
-                <option value="fi">フィンランド語</option>
-                <option value="fr">フランス語</option>
-                <option value="de">ドイツ語</option>
-                <option value="he">ヘブライ語</option>
-                <option value="id">インドネシア語</option>
-                <option value="it">イタリア語</option>
-                <option value="ja" selected="selected">日本語</option>
-                <option value="ko">韓国語</option>
-                <option value="nl">オランダ語</option>
-                <option value="pl">ポーランド語</option>
-                <option value="pt">ポルトガル語</option>
-                <option value="ru">ロシア語</option>
-                <option value="sv">スウェーデン語</option>
-                <option value="tr">トルコ語</option>
-                <option value="zh">中国語（簡体字）</option>
-                <option value="zh-TW">中国語（繁体字）</option>
-            </select>
-            <textarea style="resize: none;" name="ja" id="ja" cols="30" rows="10" class="form-control"></textarea>
-            <input type="submit" class="btn btn-primary" value="翻訳">
-            <br>
-            <br>
+        
+        <div class="col">
             <select name="lang2" id="lang2" class="form-select">
                 <option value="ar">アラビア語</option>
                 <option value="cs">チェコ語</option>
                 <option value="da">デンマーク語</option>
-                <option value="en" selected="selected">英語</option>
+                <option value="en" selected>英語</option>
                 <option value="es">スペイン語</option>
                 <option value="fi">フィンランド語</option>
                 <option value="fr">フランス語</option>
@@ -63,7 +70,7 @@
                 <option value="zh-TW">中国語（繁体字）</option>
             </select>
             <textarea style="resize: none;" cols="30" rows="10" class="form-control" readonly>{{ result }}</textarea>
-        </form>
+        </div>
     </div>
-</section>
+</form>
 {% endblock %}

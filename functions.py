@@ -2,7 +2,18 @@ import boto3
 from PIL import Image, ImageFont, ImageDraw
 from werkzeug.utils import secure_filename
 
-def detect_text(filename, t):
+#======= 翻訳 =======
+def translate(sequence, lang1, lang2):
+    #Translateサービスクライアントを作成
+    translate = boto3.client('translate')
+    #翻訳元言語から翻訳先言語に翻訳
+    result = translate.translate_text(
+        Text=sequence, SourceLanguageCode=lang1, TargetLanguageCode=lang2)
+    #翻訳後の文章を返す
+    return result['TranslatedText']
+
+#======= 画像認識 =======
+def detect_any(filename, t):
     #Translate、Rekognitionサービスクライアントを作成
     translate = boto3.client('translate')
     rekognition = boto3.client('rekognition')
