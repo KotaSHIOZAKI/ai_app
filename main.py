@@ -5,6 +5,8 @@ from flask_bootstrap import Bootstrap
 import translate as func1
 import detect as func2
 
+import boto3
+
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 
@@ -53,10 +55,34 @@ def image():
         result_str = []
     return render_template('rekognition.html', actives=actives, result=result_url, result_str=result_str)
 
-@app.route('/emotion')
+@app.route('/emotion', methods=['GET', 'POST'])
 def emotion():
     actives = [False, False, True]
-    return render_template('emotion.html', actives=actives)
+
+    sent_text = ''
+    results = []
+
+    if request.method == 'POST':
+        sent_text = request.form.get('txt')
+
+        #対応できない言語があるので、英語に翻訳しておく。
+        translate = boto3.client('translate')
+        eng = translate.translate_text(
+            Text=sent_text, SourceLanguageCode='auto', TargetLanguageCode='en'
+        )['TranslatedText']
+
+        comprehend = boto3.client('comprehend')
+        emotions = comprehend.detect_sentiment(Text=eng, LanguageCode='en')
+
+        results = [
+            emotions["SentimentScore"]["Positive"],
+            emotions["SentimentScore"]["Negative"],
+            emotions["SentimentScore"]["Neutral"],
+            emotions["SentimentScore"]["Mixed"],
+            emotions["Sentiment"]
+        ]
+
+    return render_template('emotion.html', actives=actives, sent_text=sent_text, results=results)
 
 if __name__ == '__main__':
     app.run(debug=True)

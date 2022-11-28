@@ -7,9 +7,11 @@
 {% block contents %}
 <div class="section-title">
     <h2>翻訳</h2>
+    <h6>左のボックスにテキストを入力し、翻訳ボタンを押してください。</h6>
 </div>
 <form action="/translate" method="post">
     <div class="row">
+        <!-- 翻訳元のテキスト -->
         <div class="col-5">
             <div class="row">
                 <div class="col">
@@ -44,13 +46,15 @@
             </div>
             <textarea style="resize: none;" name="sourceTxt" id="sourceTxt" cols="30" rows="10" class="form-control">{{ source }}</textarea>
         </div>
-
+        
+        <!-- 言語の入れ替え -->
         <div class="col-2 text-center">
             <div class="btn btn-primary" onclick="swap_langage()">
                 入れ替え
             </div>
         </div>
         
+        <!-- 翻訳先のテキスト -->
         <div class="col-5">
             <select name="lang2" id="lang2" class="form-select">
                 <option value="ar">アラビア語</option>
@@ -80,10 +84,13 @@
             {% if result %}
             <div class="row row-cols-auto">
                 {% if audio_path %}
+                <!-- 音声が存在していれば、音声ボタンを表示する（クリックして再生） -->
                 <div class="col btn btn-danger" onclick="play_polly()">
                     音声
                 </div>
                 {% endif %}
+
+                <!-- 翻訳メモのダウンロード可 -->
                 <a href="static/memo/translate_out.txt" class="col btn btn-success" download>
                     ダウンロード
                 </a>

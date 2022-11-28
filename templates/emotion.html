@@ -5,25 +5,49 @@
 {% endblock %}
 
 {% block contents %}
-<div style="width:500px; height:500px;">
-    <canvas id="emotionChart"></canvas>
+<div class="section-title">
+    <h2>文章から感情を抽出</h2>
+    <h6>テキストを入力するか、ファイルを読み込んで、送信ボタンを押してください。</h6>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-<script>
-    var ctx = document.getElementById('emotionChart').getContext('2d');
+<form action="/emotion" method="post">
+    <div class="row justify-content-center">
+        <div class="col-xl-7 col-lg-9 text-center">
+            <!-- テキストファイル読み込み -->
+            <input type="file" id="txtFile" class="form-control" onchange="changeText(this)" accept="text/plain">
+            
+            <!-- テキスト（任意もしくはテキストファイルの内容） -->
+            <textarea name="txt" id="txt" cols="30" rows="10" style="resize: none;" class="form-control"></textarea>
+            
+            <input type="submit" value="送信">
+        </div>
+    </div>
+</form>
 
-    var myChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['😀ポジティブ', '😡ネガティブ', '😐ニュートラル', '❓混合'],
-            datasets: [{
-                label: 'Emotion',
-                backgroundColor: ["#1fe800", "#ff0000", "#ffdd00", "#00eeff"],
-                borderColor: 'rgb(0, 0, 0)',
-                data: [60, 20, 10, 10]
-            }]
-        }
-    })
-</script>
+{% if sent_text %}
+
+<hr>
+<div class="row justify-content-center" id="screenshot">
+    <div class="col-xl-7 col-lg-9 text-center">
+        <!-- 送信したテキスト -->
+        <h4>{{ sent_text }}</h4>
+        <br>
+
+        {% if results %}
+        <!-- 感情ごとのスコア、推測された感情の取得　※非表示 -->
+        <input type="hidden" id="positive" value="{{ results[0] }}">
+        <input type="hidden" id="negative" value="{{ results[1] }}">
+        <input type="hidden" id="neutral" value="{{ results[2] }}">
+        <input type="hidden" id="mixed" value="{{ results[3] }}">
+        <input type="hidden" id="max" value="{{ results[4] }}">
+        {% endif %}
+        
+        <!-- 感情ごとのスコアを、円グラフで可視化 -->
+        <canvas class="col" id="emotionChart"></canvas>
+    </div>
+</div>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="static/js/emotion.js"></script>
 {% endblock %}
