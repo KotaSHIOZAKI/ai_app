@@ -63,24 +63,30 @@ def emotion():
     results = []
 
     if request.method == 'POST':
-        sent_text = request.form.get('txt')
+        try:
+            sent_text = request.form.get('txt')
 
-        #対応できない言語があるので、英語に翻訳しておく。
-        translate = boto3.client('translate')
-        eng = translate.translate_text(
-            Text=sent_text, SourceLanguageCode='auto', TargetLanguageCode='en'
-        )['TranslatedText']
+            #対応できない言語があるので、英語に翻訳しておく。
+            translate = boto3.client('translate')
+            eng = translate.translate_text(
+                Text=sent_text, SourceLanguageCode='auto', TargetLanguageCode='en'
+            )['TranslatedText']
 
-        comprehend = boto3.client('comprehend')
-        emotions = comprehend.detect_sentiment(Text=eng, LanguageCode='en')
+            #感情解析
+            comprehend = boto3.client('comprehend')
+            emotions = comprehend.detect_sentiment(Text=eng, LanguageCode='en')
 
-        results = [
-            emotions["SentimentScore"]["Positive"],
-            emotions["SentimentScore"]["Negative"],
-            emotions["SentimentScore"]["Neutral"],
-            emotions["SentimentScore"]["Mixed"],
-            emotions["Sentiment"]
-        ]
+            #感情ごとのスコアを配列にまとめる。
+            results = [
+                emotions["SentimentScore"]["Positive"],
+                emotions["SentimentScore"]["Negative"],
+                emotions["SentimentScore"]["Neutral"],
+                emotions["SentimentScore"]["Mixed"],
+                emotions["Sentiment"]
+            ]
+        except:
+            sent_text = ''
+            results = []
 
     return render_template('emotion.html', actives=actives, sent_text=sent_text, results=results)
 

@@ -46,33 +46,37 @@ voice_id_dict = {
 
 #======= 翻訳 =======
 def translate(sequence, lang1, lang2):
-    #Translateサービスクライアントを作成
-    translate = boto3.client('translate')
-    #翻訳元言語から翻訳先言語に翻訳
-    result = translate.translate_text(
-        Text=sequence, SourceLanguageCode=lang1, TargetLanguageCode=lang2
-    )['TranslatedText']
+    try:
+        #Translateサービスクライアントを作成
+        translate = boto3.client('translate')
+        #翻訳元言語から翻訳先言語に翻訳
+        result = translate.translate_text(
+            Text=sequence, SourceLanguageCode=lang1, TargetLanguageCode=lang2
+        )['TranslatedText']
 
-    #音声合成（上書きされずに前回保存した音声が流れてしまう）
-    if lang2 in voice_id_dict:
-        polly = boto3.client('polly')
-        read_text = polly.synthesize_speech(
-            Text=result, OutputFormat='mp3', VoiceId=voice_id_dict[lang2]
-        )
-        #音声ファイルの保存
-        path = 'static/audio/read_text.mp3'
-        with contextlib.closing(read_text['AudioStream']) as stream:
-            with open(path, 'wb') as file:
-                file.write(stream.read())
-    else:
-        path = ''
-    
-    #翻訳メモ
-    with open('static/memo/translate_out.txt', 'w', encoding='utf-8') as file_out:
-        file_out.write(languages[lang1] + '\n')
-        file_out.write(sequence + '\n\n')
-        file_out.write(languages[lang2] + '\n')
-        file_out.write(result)
-    
-    #翻訳後の文章を返す
-    return result, path
+        #音声合成（上書きされずに前回保存した音声が流れてしまう）
+        if lang2 in voice_id_dict:
+            polly = boto3.client('polly')
+            read_text = polly.synthesize_speech(
+                Text=result, OutputFormat='mp3', VoiceId=voice_id_dict[lang2]
+            )
+            #音声ファイルの保存
+            path = 'static/audio/read_text.mp3'
+            with contextlib.closing(read_text['AudioStream']) as stream:
+                with open(path, 'wb') as file:
+                    file.write(stream.read())
+        else:
+            path = ''
+        
+        #翻訳メモ
+        with open('static/memo/translate_out.txt', 'w', encoding='utf-8') as file_out:
+            file_out.write(languages[lang1] + '\n')
+            file_out.write(sequence + '\n\n')
+            file_out.write(languages[lang2] + '\n')
+            file_out.write(result)
+        
+        #翻訳後の文章を返す
+        return result, path
+    except:
+        print("Error!")
+        return '', ''

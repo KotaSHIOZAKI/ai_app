@@ -79,13 +79,13 @@
                 <option value="zh">中国語（簡体字）</option>
                 <option value="zh-TW">中国語（繁体字）</option>
             </select>
-            <textarea style="resize: none;" cols="30" rows="10" class="form-control" readonly>{{ result }}</textarea>
+            <textarea style="resize: none;" id="resultText" cols="30" rows="10" class="form-control" readonly>{{ result }}</textarea>
             
             {% if result %}
             <div class="row row-cols-auto">
                 {% if audio_path %}
                 <!-- 音声が存在していれば、音声ボタンを表示する（クリックして再生） -->
-                <div class="col btn btn-danger" onclick="play_polly()">
+                <div class="col btn btn-danger" onclick="play_polly('{{audio_path}}')">
                     音声
                 </div>
                 {% endif %}
