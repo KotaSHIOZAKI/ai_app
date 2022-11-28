@@ -17,18 +17,20 @@
             <input type="file" id="txtFile" class="form-control" onchange="changeText(this)" accept="text/plain">
             
             <!-- テキスト（任意もしくはテキストファイルの内容） -->
-            <textarea name="txt" id="txt" cols="30" rows="10" style="resize: none;" class="form-control"></textarea>
+            <textarea name="txt" id="txt" cols="30" rows="5" style="resize: none;" class="form-control"></textarea>
             
-            <input type="submit" value="送信">
+            <br>
+
+            <input type="submit" class="btn btn-primary" value="送信">
         </div>
     </div>
 </form>
 
-{% if sent_text %}
-
 <hr>
+
 <div class="row justify-content-center" id="screenshot">
     <div class="col-xl-7 col-lg-9 text-center">
+        {% if sent_text %}
         <!-- 送信したテキスト -->
         <h4>{{ sent_text }}</h4>
         <br>
@@ -41,13 +43,29 @@
         <input type="hidden" id="mixed" value="{{ results[3] }}">
         <input type="hidden" id="max" value="{{ results[4] }}">
         {% endif %}
-        
+            
         <!-- 感情ごとのスコアを、円グラフで可視化 -->
         <canvas class="col" id="emotionChart"></canvas>
+        <br>
+        <!-- 画像のダウンロード可 -->
+        <input type="button" id="exec" class="btn btn-success" value="ダウンロード">
+
+        <img id="image" name="image" src="" />
+        <a id="download" href="#" download=""></a>
+        {% else %}
+        <div class="d-flex justify-content-between">
+            <h2>例</h2>
+        </div>
+
+        <!-- 結果の画像を表示 -->
+        <img src="static/image/example_sentiment.jpg" width="60%">
+        {% endif %}
     </div>
 </div>
-{% endif %}
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="static/js/jquery-3.2.1.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
 <script src="static/js/emotion.js"></script>
+<script src="static/js/screenshot.js"></script>
 {% endblock %}
