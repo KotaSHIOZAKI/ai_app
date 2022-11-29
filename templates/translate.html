@@ -15,7 +15,7 @@
         <div class="col-5">
             <div class="row">
                 <div class="col">
-                    <select name="lang1" id="lang1" class="form-select">
+                    <select name="lang1" id="lang1" class="form-select"> <!-- ❕POSTした後も保持したい -->
                         <option value="auto">自動</option>
                         <option value="ar">アラビア語</option>
                         <option value="cs">チェコ語</option>
@@ -56,7 +56,7 @@
         
         <!-- 翻訳先のテキスト -->
         <div class="col-5">
-            <select name="lang2" id="lang2" class="form-select">
+            <select name="lang2" id="lang2" class="form-select"> <!-- ❕POSTした後も保持したい -->
                 <option value="ar">アラビア語</option>
                 <option value="cs">チェコ語</option>
                 <option value="da">デンマーク語</option>
@@ -85,9 +85,9 @@
             <div class="row row-cols-auto">
                 {% if audio_path %}
                 <!-- 音声が存在していれば、音声ボタンを表示する（クリックして再生） -->
-                <div class="col btn btn-danger" onclick="play_polly('{{audio_path}}')">
+                <!-- <div class="col btn btn-danger" onclick="play_polly('{{audio_path}}')">
                     音声
-                </div>
+                </div> -->
                 {% endif %}
 
                 <!-- 翻訳メモのダウンロード可 -->

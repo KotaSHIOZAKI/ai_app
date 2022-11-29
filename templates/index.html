@@ -5,15 +5,85 @@
 {% endblock %}
 
 {% block contents %}
-<div class="section-title">
-    <a href="/translate">
-        <h1>翻訳</h1>
-    </a>
-    <a href="/image">
-        <h1>画像認識</h1>
-    </a>
-    <a href="/emotion">
-        <h1>感情解析</h1>
-    </a>
+<section id="hero" class="d-flex align-items-center">
+    <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+        <div class="row justify-content-center">
+            <div class="col-xl-7 col-lg-9 text-center">
+                <h1>AIアプリ</h1>
+                <h2>Flask × AWS</h2>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+    <div class="swiper-wrapper">
+
+        <div class="swiper-slide">
+            <div class="testimonial-item">
+                <a href="/emotion">
+                    <br>
+                    <img src="static/image/comprehend.png" class="img-fluid border" alt="感情解析" width="100%">
+                    <h1 class="text-center">感情解析機能</h1>
+                    <p>任意の文章、もしくはテキストファイルから感情を解析し、さらに円グラフで可視化することができます。</p>
+                </a>
+            </div>
+        </div>
+
+        <div class="swiper-slide">
+            <div class="testimonial-item">
+                <a href="/translate">
+                    <br>
+                    <img src="static/image/translate.png" class="img-fluid border" alt="翻訳" width="100%">
+                    <h1 class="text-center">翻訳機能</h1>
+                    <p>Google翻訳に基づいた機能。翻訳元、翻訳先の言語を選択し、任意の文章を翻訳することができます。</p>
+                </a>
+            </div>
+        </div>
+        
+        <div class="swiper-slide">
+            <div class="testimonial-item">
+                <a href="/image">
+                    <br>
+                    <img src="static/image/rekognition.png" class="img-fluid border" alt="画像分析" width="100%">
+                    <h1 class="text-center">画像分析機能</h1>
+                    <p>任意の画像から人物、もの、文字列などを認識することができます。</p>
+                </a>
+            </div>
+        </div>
+
+    </div>
+    <br>
+    <div class="swiper-pagination"></div>
 </div>
+
+<section id="clients" class="clients section-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center" data-aos="zoom-in">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" class="img-fluid" alt="">
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center" data-aos="zoom-in">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jquery/jquery-original-wordmark.svg" class="img-fluid" alt="">
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center" data-aos="zoom-in">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original-wordmark.svg" class="img-fluid" alt="">
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center" data-aos="zoom-in">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original-wordmark.svg" class="img-fluid" alt="">
+            </div>
+            
+            <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center" data-aos="zoom-in">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original-wordmark.svg" class="img-fluid" alt="">
+            </div>
+
+            <div class="col-lg-2 col-md-4 col-6 d-flex align-items-center justify-content-center" data-aos="zoom-in">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" class="img-fluid" alt="">
+            </div>
+        </div>
+    </div>
+  </section>
 {% endblock %}
