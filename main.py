@@ -20,6 +20,7 @@ def index():
 @app.route('/translate', methods=['GET', 'POST'])
 def translate():
     actives = [True, False, False]
+    langs = ['', '']
     messages = []
 
     if request.method == 'POST':
@@ -27,6 +28,8 @@ def translate():
         source = request.form.get('sourceTxt')
         #翻訳先テキスト、音声パス
         result, audio_path, error = func1.translate(source, request.form.get('lang1'), request.form.get('lang2'))
+
+        langs = [request.form.get('lang1'), request.form.get('lang2')]
 
         #メッセージ
         if error:
@@ -40,7 +43,7 @@ def translate():
         result = ''
         audio_path = ''
     
-    return render_template('translate.html', actives=actives, messages=messages, source=source, result=result, audio_path=audio_path)
+    return render_template('translate.html', actives=actives, langs=langs, messages=messages, source=source, result=result, audio_path=audio_path)
 
 @app.route('/image', methods=['GET', 'POST'])
 def image():
