@@ -7,6 +7,8 @@ import detect as func2
 
 import boto3
 
+import message as m #メッセージクラス呼び出し
+
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 
@@ -18,17 +20,27 @@ def index():
 @app.route('/translate', methods=['GET', 'POST'])
 def translate():
     actives = [True, False, False]
+    messages = []
 
     if request.method == 'POST':
         #翻訳元テキスト
         source = request.form.get('sourceTxt')
         #翻訳先テキスト、音声パス
-        result, audio_path = func1.translate(source, request.form.get('lang1'), request.form.get('lang2'))
+        result, audio_path, error = func1.translate(source, request.form.get('lang1'), request.form.get('lang2'))
+
+        #メッセージ
+        if error:
+            #対応できない言語で翻訳しようとした場合（例：ラテン語）
+            messages = [m.Message("alert alert-danger", "対応できない言語なので、翻訳に失敗しました。")]
+        else:
+            #翻訳に成功した場合
+            messages = [m.Message("alert alert-success", "翻訳に成功しました。")]
     else:
         source = ''
         result = ''
         audio_path = ''
-    return render_template('translate.html', actives=actives, source=source, result=result, audio_path=audio_path)
+    
+    return render_template('translate.html', actives=actives, messages=messages, source=source, result=result, audio_path=audio_path)
 
 @app.route('/image', methods=['GET', 'POST'])
 def image():
@@ -47,13 +59,28 @@ def image():
 
         #検出対象（０＝人物、１＝物、２＝文字列）
         t = int(request.form.get('type'))
+        target = 'もの'
+        if t == 2:
+            target = '文字列'
 
-        result_url, result_str = func2.detect_any(t)
+        result_url, result_str, count = func2.detect_any(t)
+
+        #メッセージ
+        if count > 0:
+            #認識に成功した場合
+            messages = [m.Message("alert alert-success", "認識に成功しました。")]
+        else:
+            #一つも認識されなかった場合
+            messages = [m.Message("alert alert-warning", "一つも認識されていないようです。")]
     else:
         #GETされたとき
         result_url = ''
         result_str = []
-    return render_template('rekognition.html', actives=actives, result=result_url, result_str=result_str)
+
+        messages = []
+        target = ''
+    
+    return render_template('rekognition.html', actives=actives, messages=messages, target=target, result=result_url, result_str=result_str)
 
 @app.route('/emotion', methods=['GET', 'POST'])
 def emotion():
@@ -61,12 +88,13 @@ def emotion():
 
     sent_text = ''
     results = []
+    messages = []
 
     if request.method == 'POST':
         try:
             sent_text = request.form.get('txt')
 
-            #対応できない言語があるので、英語に翻訳しておく。
+            #日本語には対応できないので、英語に翻訳しておく。
             translate = boto3.client('translate')
             eng = translate.translate_text(
                 Text=sent_text, SourceLanguageCode='auto', TargetLanguageCode='en'
@@ -84,11 +112,17 @@ def emotion():
                 emotions["SentimentScore"]["Mixed"],
                 emotions["Sentiment"]
             ]
+
+            #解析に成功した場合のメッセージ
+            messages = [m.Message("alert alert-success", "解析に成功しました。")]
         except:
             sent_text = ''
             results = []
 
-    return render_template('emotion.html', actives=actives, sent_text=sent_text, results=results)
+            #エラーが発生した場合のメッセージ
+            messages = [m.Message("alert alert-danger", "解析に失敗しました。")]
+
+    return render_template('emotion.html', actives=actives, messages=messages, sent_text=sent_text, results=results)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -85,7 +85,7 @@ def translate(sequence, lang1, lang2):
             file_out.write(result)
         
         #翻訳後の文章を返す
-        return result, path
+        return result, path, False
     except:
         print("Error!")
-        return '', ''
+        return '', '', True

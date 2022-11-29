@@ -105,4 +105,4 @@ def detect_any(t):
 
     # 出力画像をファイルに保存
     image_in.save('static/image/out.jpg')
-    return 'static/image/out.jpg', detected_list
+    return 'static/image/out.jpg', detected_list, len(detected_list)
