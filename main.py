@@ -2,20 +2,24 @@ from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
 from flask_bootstrap import Bootstrap
 
-import translate as func1
-import detect as func2
+from functions import translate as func1
+from functions import detect as func2
 
 import boto3
 
-import message as m #メッセージクラス呼び出し
+from functions import message as m #メッセージクラス呼び出し
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
+
+#――――――――――――――――――――――――――――――#
 
 @app.route('/')
 def index():
     actives = [False, False, False]
     return render_template('index.html', actives=actives)
+
+#――――――――――――――――――――――――――――――#
 
 @app.route('/translate', methods=['GET', 'POST'])
 def translate():
@@ -44,6 +48,8 @@ def translate():
         audio_path = ''
     
     return render_template('translate.html', actives=actives, langs=langs, messages=messages, source=source, result=result, audio_path=audio_path)
+
+#――――――――――――――――――――――――――――――#
 
 @app.route('/image', methods=['GET', 'POST'])
 def image():
@@ -84,6 +90,8 @@ def image():
         target = ''
     
     return render_template('rekognition.html', actives=actives, messages=messages, target=target, result=result_url, result_str=result_str)
+
+#――――――――――――――――――――――――――――――#
 
 @app.route('/emotion', methods=['GET', 'POST'])
 def emotion():
